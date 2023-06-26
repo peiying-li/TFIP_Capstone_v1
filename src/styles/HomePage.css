@@ -1,0 +1,70 @@
+.homepage .headerContainer {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  background-color: bisque;
+  margin-top: 2%;
+  /* border-style: solid;
+  border-radius: 10px; */
+  /* margin-left: 5%;
+  margin-right: 5%; */
+}
+
+.homepage h1 {
+  color: #e17314;
+  font-weight: normal;
+  font-family: "futura";
+}
+
+.homepage .popular {
+  float: right;
+  margin-top: 15%;
+  width: 70%;
+  background-color: bisque;
+  text-align: center;
+}
+
+.homepage .leftNavBar {
+  float: left;
+  text-align: center;
+  width: 25%;
+  margin-top: 14%;
+  margin-left: 2%;
+}
+
+.homepage .leftNavBar h2 {
+  background-color: rgb(234, 193, 138);
+  padding: 10px;
+  color: white;
+}
+
+.homepage .leftNavBar ul {
+  display: inline;
+  list-style-type: none;
+}
+
+.homepage .leftNavBar li {
+  border-bottom: 1px solid black;
+  padding: 10px;
+  color: black;
+}
+
+.homepage .bottom {
+  position: fixed;
+  text-align: center;
+  bottom: 10%;
+  width: 100%;
+}
+
+.homepage .bottom img {
+  float: bottom;
+  width: 30%;
+  height: 250px;
+  padding: 1%;
+}
+
+.homepage .bottom p {
+  display: inline;
+  padding: 15%;
+  color: black;
+}

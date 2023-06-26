@@ -1,0 +1,14 @@
+.navBar {
+  text-align: center;
+  background-color: bisque;
+  color: black;
+}
+
+.navBar a {
+  color: rgb(234, 189, 74);
+  padding: 5%;
+}
+
+.navBar a:hover {
+  color: whitesmoke;
+}
