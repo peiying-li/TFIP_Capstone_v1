@@ -1,21 +1,28 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "../styles/NavBar.css";
 import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const location = useLocation();
-  if (location.pathname === "/") {
+  if (
+    location.pathname === "/homepage" ||
+    location.pathname === "/profile" ||
+    location.pathname === "/form" ||
+    location.pathname === "/donationform"
+  ) {
     return null;
   }
   return (
     <nav className="navBar">
-      <div className="top"></div>
-      <NavLink to="/">MARKETPLACE FOR MOTHERS</NavLink>
+      <div>
+        <Link to="/homepage">MARKETPLACE FOR MOTHERS</Link>
+      </div>
+
       <ul>
-        <NavLink to="/clothing">Clothings</NavLink>
-        <NavLink to="/goingout">Going Out</NavLink>
-        <NavLink to="/nursery">Nursery</NavLink>
-        <NavLink to="/books">Books</NavLink>
+        <NavLink to="/Clothings">Clothings</NavLink>
+        <NavLink to="/Outdoors">Outdoors</NavLink>
+        <NavLink to="/Nursery">Nursery</NavLink>
+        <NavLink to="/Books">Books</NavLink>
       </ul>
     </nav>
   );
