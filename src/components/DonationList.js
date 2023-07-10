@@ -4,6 +4,8 @@ import DonationProfileItem from "./DonationProfileItem";
 
 const Container = styled.div`
   text-align: left;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const DonationList = (props) => {

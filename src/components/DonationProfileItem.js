@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Button from "@mui/material/Button";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -13,9 +14,11 @@ import booksImg from "../assets/books2Cat.jpg";
 import clothingImg from "../assets/nursery1Cat.jpg";
 
 const Container = styled.div`
-  background-color: bisque;
-  margin: 2.5%;
+  background-color: beige;
+  margin: 1%;
+
   display: flex;
+  width: 48%;
   justify-content: space-between;
 `;
 
@@ -33,8 +36,8 @@ const CatImage = styled.img`
 `;
 
 const DetailContainer = styled.div`
-  width: 60%;
-  border-left: solid bisque 5px;
+  width: 50%;
+  border-left: solid beige 5px;
 `;
 
 const DetailsText = styled.div`
@@ -47,12 +50,17 @@ const StatusContainer = styled.div`
   display: flex;
   justify-content: space-around;
 `;
-const StyledReservedStatus = styled(Button)``;
+const InnerStatusContainer = styled.div`
+  margin: auto;
+`;
+const StyledReservedStatus = styled(Button)`
+  color: white;
+`;
 
 const ButtonsContainer = styled.div`
-  width: 40%;
+  width: 30%;
   float: right;
-  background-color: bisque;
+  background-color: beige;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
@@ -63,11 +71,23 @@ const StyledButton = styled(Button)`
   height: fit-content;
 `;
 
+// Styling for MUI colour palette
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "rgb(218,165,32)",
+      darker: "#053e85",
+    },
+  },
+});
+
+// End of styled components
+
 const DonationProfileItem = ({ item }) => {
   const [inventory, setInventory] = useState([]);
   const [catImage, setcatImage] = useState([clothingImg]);
   const [loading, setLoading] = useState(true);
-  const [reservationStatus, setreservationStatus] = useState(true);
+  const [reservationStatus, setreservationStatus] = useState([]);
 
   const navigate = useNavigate();
   var link = "/donationform/" + item.itemId;
@@ -92,6 +112,7 @@ const DonationProfileItem = ({ item }) => {
 
   useEffect(() => {
     changeImageSrc();
+    statusHandler();
   }, []);
 
   // Function to Delete Inventory Items
@@ -99,11 +120,24 @@ const DonationProfileItem = ({ item }) => {
     id = item.itemId;
     console.log(id);
     await axios
-      .delete(`http://localhost:8080/deleteInventoryItem/${id}`)
+      .put(`http://localhost:8080/removeDonation/${id}`, null)
       .then((response) => {
         setInventory(response.data);
         setLoading(false);
+        navigate(0);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
       });
+  };
+
+  // Function to handle status of reservation
+  const statusHandler = () => {
+    if (item.isReserved == 1) {
+      setreservationStatus("Reserved");
+    } else {
+      setreservationStatus("Available");
+    }
   };
 
   return (
@@ -120,18 +154,25 @@ const DonationProfileItem = ({ item }) => {
         Condition:
         <DetailsText> {item.itemCondition}</DetailsText>
       </DetailContainer>
-      {/* TODO: FIX THIS */}
+
       <StatusContainer>
-        <StyledReservedStatus variant="standard" disabled="true">
-          STATUS{item.isReserved}
-        </StyledReservedStatus>
+        <InnerStatusContainer>
+          <StyledReservedStatus disabled="true">
+            {reservationStatus}
+          </StyledReservedStatus>
+        </InnerStatusContainer>
       </StatusContainer>
-      <ButtonsContainer>
-        <StyledButton onClick={navigateDonationForm}>Edit</StyledButton>
-        <StyledButton onClick={(e) => deleteItem(item.id, e)}>
-          Delete
-        </StyledButton>
-      </ButtonsContainer>
+      <ThemeProvider theme={theme}>
+        {" "}
+        <ButtonsContainer>
+          <StyledButton onClick={navigateDonationForm}>
+            Update Condition
+          </StyledButton>
+          <StyledButton onClick={(e) => deleteItem(item.id, e)}>
+            Delete
+          </StyledButton>
+        </ButtonsContainer>
+      </ThemeProvider>
     </Container>
   );
 };

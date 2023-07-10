@@ -5,28 +5,35 @@ import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
+import Slider from "../components/Slider";
+
 const Container = styled.div`
   position: relative;
 `;
 const HeaderContainer = styled.div`
   text-align: center;
-  width: 100%;
-  background-color: bisque;
-  margin-top: 2%;
+  width: 95%;
+  /* background-color: #fff2cc; */
+  margin: auto;
+  margin-top: 3%;
+  margin-bottom: 4%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  border: solid 1px;
 `;
 const Header = styled.h1`
-  color: #e17314;
-  font-weight: normal;
-  font-family: "futura";
+  color: rgb(210, 180, 140);
+  font-weight: bold;
 `;
 
 const NavContainer = styled.div`
   /* position: absolute;
   /* display: flex; */
   width: 30%;
-  height: 300px;
+  height: 400px;
   left: 3%;
   top: 150px;
+  margin-right: 1%;
   background-color: white;
   align-content: center;
   align-items: center;
@@ -37,12 +44,16 @@ const NavHeader = styled.h2`
   /* /* position: absolute; */
   /* top: 0; */
   width: 80%;
-  height: 50px;
-  background-color: rgb(234, 193, 138);
+  height: fit-content;
+  background-color: rgb(210, 180, 140);
   color: white;
   text-align: center;
-  padding-top: 5%;
+  padding: 3%;
+  padding-top: 4%;
+  padding-bottom: 4%;
   margin: auto;
+  margin-left: 9%;
+  margin-bottom: 3%;
 `;
 const UnOrderedList = styled.div`
   display: inline;
@@ -53,12 +64,15 @@ const UnOrderedList = styled.div`
 const ListItem = styled.li`
   border-bottom: 1px solid black;
   width: 25%;
-  padding: 20px;
+  padding: 15px;
+
   text-decoration: none;
   margin: auto;
 `;
 const StyledLink = styled(Link)`
   color: black;
+  font-size: large;
+  text-decoration: none;
 `;
 
 const AgeCategories = styled.div`
@@ -66,15 +80,14 @@ const AgeCategories = styled.div`
   width: 100%;
   /* background-color: black; */
   justify-content: space-evenly;
-  padding-top: 1%;
+  padding-top: 2%;
   text-align: center;
 
   /* height: 100px; */
 `;
 
 const SingleCategory = styled.span`
-  /* flex: 1; */
-  /* flex-direction: column; */
+  width: 100%;
   padding: 2%;
 `;
 
@@ -116,30 +129,32 @@ function Homepage() {
         </UnOrderedList>
       </NavContainer>
 
+      <Slider />
+
       <AgeCategories>
         <SingleCategory>
           <Link to="/Infant">
             <Image src={InfantHomeLogo} alt="infantHomeLogo" />
           </Link>
-          <Link to="/Infant">
+          <StyledLink to="/Infant">
             <ImageText>Infant</ImageText>
-          </Link>
+          </StyledLink>
         </SingleCategory>
         <SingleCategory>
           <Link to="/Toddler">
             <Image src={GirlHomeLogo} alt="girlHomeLogo" />
           </Link>
-          <Link to="/Toddler">
+          <StyledLink to="/Toddler">
             <ImageText>Toddler</ImageText>
-          </Link>
+          </StyledLink>
         </SingleCategory>
         <SingleCategory>
           <Link to="/Preschool">
             <Image src={ToddlerHomeLogo} alt="toddlerHomeLogo" />
           </Link>
-          <Link to="/Preschool">
+          <StyledLink to="/Preschool">
             <ImageText>Preschool</ImageText>
-          </Link>
+          </StyledLink>
         </SingleCategory>
       </AgeCategories>
     </Container>

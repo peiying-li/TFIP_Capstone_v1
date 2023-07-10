@@ -5,6 +5,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { orange } from "@mui/material/colors";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -13,25 +15,49 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
-  border: solid;
-  margin: 2%;
+  border: solid 2px;
+  margin: auto;
+  margin-top: 10%;
   padding: 3%;
   width: 80%;
   /* display: flex;
   justify-content: space-evenly; */
 `;
 
-const FormContainer = styled.div`
+const Title = styled.div`
+  width: 60%;
   background-color: bisque;
+  color: white;
+  font-size: 30px;
+
+  margin: auto;
+  margin-top: 3%;
+  margin-bottom: 2%;
+
+  padding: 1%;
+`;
+
+const FormContainer = styled.div`
+  /* background-color: bisque; */
 `;
 
 const ButtonContainer = styled.div`
-  background-color: beige;
+  background-color: white;
   float: right;
   width: max-content;
 `;
 
 const StyledSubmitButton = styled(Button)``;
+
+// Styling for MUI colour palette
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#ff9800",
+      darker: "#b26a00",
+    },
+  },
+});
 
 const DonationForm = ({ item }) => {
   const params = useParams();
@@ -40,15 +66,16 @@ const DonationForm = ({ item }) => {
 
   // Function to Donate
   const donateItem = async (itemConditionId) => {
-    await axios.put(`http://localhost:8080/moveItemToDonations`, null, {
-      params: {
-        id: params.itemId,
-        itemConditionId: itemConditionId,
-      },
-    });
-    //   .then((response) => {
-    //     // setitemConditionId(itemConditionId);
-    //   });
+    await axios
+      .put(`http://localhost:8080/moveItemToDonations`, null, {
+        params: {
+          id: params.itemId,
+          itemConditionId: itemConditionId,
+        },
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   const handleChange = (e) => {
@@ -61,9 +88,10 @@ const DonationForm = ({ item }) => {
 
   return (
     <Container>
+      <Title>CONDITION</Title>
       <FormContainer>
         <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">Condition</FormLabel>
+          {/* <FormLabel id="demo-radio-buttons-group-label">Condition</FormLabel> */}
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="1"
@@ -96,16 +124,18 @@ const DonationForm = ({ item }) => {
             />
           </RadioGroup>
           <ButtonContainer>
-            <StyledSubmitButton
-              variant="outlined"
-              onClick={(e) => {
-                donateItem(itemConditionId, e);
-                alert("Donated");
-                navigateProfile();
-              }}
-            >
-              Donate
-            </StyledSubmitButton>
+            <ThemeProvider theme={theme}>
+              <StyledSubmitButton
+                variant="outlined"
+                onClick={(e) => {
+                  donateItem(itemConditionId, e);
+                  alert("Donated");
+                  navigateProfile();
+                }}
+              >
+                Submit
+              </StyledSubmitButton>
+            </ThemeProvider>
           </ButtonContainer>
         </FormControl>
       </FormContainer>

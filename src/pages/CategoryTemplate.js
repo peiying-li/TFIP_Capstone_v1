@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Donations from "../components/Donations";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import NavBar from "../components/NavBar";
 
 const Container = styled.div`
   position: relative;
@@ -17,7 +18,7 @@ const CategoryHeader = styled.div`
 const Title = styled.h1`
   margin: 20px;
   text-align: center;
-  background-color: bisque;
+  background-color: rgb(210, 180, 140);
   height: 50px;
   padding-top: 12px;
   color: white;
@@ -31,22 +32,12 @@ const CategoryTemplate = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   let catName = params.categoryname;
 
   //get axios here for catID of passed in catName
-  const headers = {
-    "Cache-Control": "no-cache",
-    "Accept-Language": "en",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "http://localhost:3000",
-    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers":
-      "Content-Type, Authorization, X-Requested-With, Origin",
-  };
 
-  let config = {
-    headers,
-  };
   useEffect(() => {
     setLoading(true);
     if (
@@ -61,35 +52,40 @@ const CategoryTemplate = () => {
       console.log("test if go into agegrpID");
       getAgeGrpId();
     }
-  }, []);
+  }, [params]);
 
   const getCatId = async () => {
     await axios
-      .get(`http://localhost:8080/catIdFromCatName/${catName}`, config)
+      .get(`http://localhost:8080/catIdFromCatName/${catName}`)
       .then((response) => {
         setcatId(response.data);
         getlist(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
       });
   };
 
   const getlist = async (data) => {
     console.log(data);
-    try {
-      await axios
-        .get(`http://localhost:8080/donationsByTypeCat/${data}`, config)
-        .then((response) => {
-          setDonations(response.data);
-          setLoading(false);
-        });
-    } catch (error) {
-      console.error(error);
-    }
+
+    await axios
+      .get(`http://localhost:8080/donationsByTypeCat/${data}`)
+      .then((response) => {
+        setDonations(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
+
+    // navigate(0);
   };
 
   /* For AgeGroup Category */
   const getAgeGrpId = async () => {
     await axios
-      .get(`http://localhost:8080/ageGrpIdFromAgeGrpName/${catName}`, config)
+      .get(`http://localhost:8080/ageGrpIdFromAgeGrpName/${catName}`)
       .then((response) => {
         console.log("ageGrpId: " + ageGrpId);
         setAgeGrpId(response.data);
@@ -101,7 +97,7 @@ const CategoryTemplate = () => {
     console.log("ageGrpId: " + ageGrpId);
     try {
       await axios
-        .get(`http://localhost:8080/donationsByAgeGrp/${ageGrpId}`, config)
+        .get(`http://localhost:8080/donationsByAgeGrp/${ageGrpId}`)
         .then((response) => {
           setDonations(response.data);
           setLoading(false);
@@ -117,6 +113,7 @@ const CategoryTemplate = () => {
         <div>Loading</div>
       ) : (
         <Container>
+          <NavBar />
           {/* Add image container component */}
 
           <CategoryHeader>

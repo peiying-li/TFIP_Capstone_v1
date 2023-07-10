@@ -18,7 +18,7 @@ const Container = styled.div`
 const Title = styled.div`
   width: 50%;
 
-  background-color: bisque;
+  background-color: rgb(210, 180, 140);
   color: white;
   font-size: 40px;
 
@@ -72,27 +72,21 @@ const InventoryForm = () => {
       catId: catId,
       ageGrpId: ageGrpId,
     };
-    // console.log(e);
-    // console.log(e.target[0].value);
-    // console.log(itemName);
-    // console.log(description);
-    // console.log(itemData);
 
-    try {
-      await axios
-        .post("http://localhost:8080/addNewInventoryItem", itemData)
-        .then(
-          setItemName(""),
-          setBrand(""),
-          setDescription(""),
-          setCatId(""),
-          setAgeGrpId("")
-        );
-    } catch (error) {
-      console.log(error);
-    }
+    await axios
+      .post("http://localhost:8080/addNewInventoryItem", itemData)
+      .then(
+        setItemName(""),
+        setBrand(""),
+        setDescription(""),
+        setCatId(""),
+        setAgeGrpId("")
+      )
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
-  // TODO: DO BACKEND GET LIST
+
   const categories = [
     {
       catId: 1,
@@ -209,13 +203,13 @@ const InventoryForm = () => {
               ADD / UPDATE
             </Button>
           </form>
+          <ReturnButtonContainer>
+            <StyledReturnButton variant="outlined" onClick={navigateProfile}>
+              Go Back
+            </StyledReturnButton>
+          </ReturnButtonContainer>
         </InnerContainer>
       </FormContainer>
-      <ReturnButtonContainer>
-        <StyledReturnButton variant="outlined" onClick={navigateProfile}>
-          Go Back
-        </StyledReturnButton>
-      </ReturnButtonContainer>
     </Container>
   );
 };

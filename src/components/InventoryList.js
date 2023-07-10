@@ -3,9 +3,9 @@ import InventoryItem from "./InventoryItem";
 
 const Container = styled.div`
   text-align: left;
+  display: flex;
+  flex-wrap: wrap;
 `;
-
-const Title = styled.div``;
 
 const InventoryList = (props) => {
   return (

@@ -1,24 +1,28 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import outdoorsImg from "../assets/outdoors3Cat.jpg";
-import nurseryImg from "../assets/clothing2Cat.jpg";
+import clothingImg from "../assets/clothing2Cat.jpg";
 import booksImg from "../assets/books2Cat.jpg";
-import clothingImg from "../assets/nursery1Cat.jpg";
+import nurseryImg from "../assets/nursery1Cat.jpg";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 
 import Button from "@mui/material/Button";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const Container = styled.div`
   background-color: beige;
-  margin: 2.5%;
+  margin: 1%;
+  /* margin-left: 7%; */
+  /* margin-right: 7%; */
   display: flex;
-  justify-content: space-between;
+  width: 48%;
+  /* justify-content: space-between; */
 `;
 
 const DetailContainer = styled.div`
-  width: 60%;
+  width: 50%;
   border-left: solid beige 5px;
 `;
 
@@ -29,7 +33,7 @@ const DetailsText = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  width: 40%;
+  width: 30%;
   float: right;
   background-color: beige;
   display: flex;
@@ -41,13 +45,15 @@ const ButtonsContainer = styled.div`
 const StyledButton = styled(Button)``;
 
 const DonateContainer = styled.div`
+  width: 20%;
   border-left: solid white 3px;
   display: flex;
   justify-content: space-around;
+  flex-direction: column;
 `;
 
 const StyledDonateButton = styled(Button)`
-  width: 33%;
+  width: 100%;
 `;
 
 const ImageContainer = styled.div`
@@ -61,6 +67,27 @@ const CatImage = styled.img`
   border: solid 0.5px black;
 `;
 
+// Styling for MUI colour palette
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "rgb(218,165,32)",
+      darker: "#053e85",
+    },
+  },
+});
+
+const theme1 = createTheme({
+  palette: {
+    primary: {
+      main: "#388E3C",
+      darker: "#053e85",
+    },
+  },
+});
+
+// End of styled components
+
 const InventoryItem = ({ item }) => {
   const [inventory, setInventory] = useState([]);
   const [catImage, setcatImage] = useState([clothingImg]);
@@ -72,9 +99,6 @@ const InventoryItem = ({ item }) => {
   const navigateForm = () => {
     navigate("/form");
   };
-
-  // const imageSrc = item.catImage;
-  // console.log(imageSrc);
 
   // Function to change the image source
   const changeImageSrc = () => {
@@ -104,17 +128,14 @@ const InventoryItem = ({ item }) => {
       .then((response) => {
         setInventory(response.data);
         setLoading(false);
+        navigate(0);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
       });
   };
   // Function to handle Donate button
   var link = "/donationform/" + item.itemId;
-  // const initial_state = () => {
-  //   if (item.itemCondition != null) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
 
   const handleButton = () => {
     if (item.itemCondition != null) {
@@ -123,6 +144,9 @@ const InventoryItem = ({ item }) => {
       navigate(link);
     }
   };
+
+  // Function to handle update button
+  var updateLink = "/updateform/" + item.itemId;
 
   return (
     <Container>
@@ -142,21 +166,28 @@ const InventoryItem = ({ item }) => {
         {/* add buttons here*/}
       </DetailContainer>
       <DonateContainer>
-        <StyledDonateButton
-          disabled={isClicked}
-          onClick={(e) => {
-            handleButton();
-          }}
-        >
-          Donate
-        </StyledDonateButton>
+        <ThemeProvider theme={theme1}>
+          {" "}
+          <StyledDonateButton
+            sx={{ fontSize: "110%" }}
+            disabled={isClicked}
+            onClick={(e) => {
+              handleButton();
+            }}
+          >
+            Donate
+          </StyledDonateButton>
+        </ThemeProvider>
       </DonateContainer>
       <ButtonsContainer>
-        <StyledButton onClick={navigateForm}>Edit</StyledButton>
-
-        <StyledButton onClick={(e) => deleteItem(item.id, e)}>
-          Delete
-        </StyledButton>
+        <ThemeProvider theme={theme}>
+          <StyledButton onClick={(e) => navigate(updateLink)}>
+            Edit
+          </StyledButton>
+          <StyledButton onClick={(e) => deleteItem(item.id, e)}>
+            Delete
+          </StyledButton>
+        </ThemeProvider>
       </ButtonsContainer>
     </Container>
   );

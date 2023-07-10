@@ -1,19 +1,20 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import User from "./pages/User";
 import Homepage from "./pages/Homepage";
 import Profile from "./pages/Profile";
 import CategoryTemplate from "./pages/CategoryTemplate";
 import DonationDetail from "./pages/DonationDetail";
-import NavBar from "./components/NavBar";
 import InventoryForm from "./pages/InventoryForm";
 import DonationForm from "./pages/DonationForm";
+import UpdateForm from "./pages/UpdateForm";
 
 const App = () => {
   return (
     <div className="App">
       <Router>
-        <NavBar />
         <Routes>
+          <Route path="/user" exact Component={User}></Route>
           <Route path="/homepage" exact Component={Homepage}></Route>
           <Route path="/:categoryname" element={<CategoryTemplate />} />
           <Route path="/donationdetail/:itemId" element={<DonationDetail />} />
@@ -23,6 +24,7 @@ const App = () => {
             path="/donationform/:itemId"
             element={<DonationForm />}
           ></Route>
+          <Route path="/updateform/:itemId" element={<UpdateForm />}></Route>
         </Routes>
       </Router>
     </div>
